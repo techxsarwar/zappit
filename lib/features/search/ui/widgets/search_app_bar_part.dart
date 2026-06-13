@@ -49,7 +49,7 @@ class SearchAppBarPart extends StatelessWidget {
                     onPressed: () => context.push(AppPaths.cart),
                     backgroundColor: AppColors.darkBlue,
                     size: 55.h,
-                    icon: Icon(
+                    icon: FaIcon(
                       FontAwesomeIcons.basketShopping,
                       size: 24.h,
                       color: AppColors.white,
@@ -70,7 +70,7 @@ class SearchAppBarPart extends StatelessWidget {
                       onPressed: () => context.push(AppPaths.cart),
                       backgroundColor: AppColors.darkBlue,
                       size: 55.h,
-                      icon: Icon(
+                      icon: FaIcon(
                         FontAwesomeIcons.basketShopping,
                         size: 24.h,
                         color: AppColors.white,

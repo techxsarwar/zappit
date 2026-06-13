@@ -156,7 +156,7 @@ class AppBarPart extends StatelessWidget {
           backgroundColor: const Color(0xFFECF0F4),
           onPressed: () => _showMenuBottomSheet(context),
           size: 60.h,
-          icon: Icon(FontAwesomeIcons.barsStaggered, color: AppColors.darkBlue),
+          icon: FaIcon(FontAwesomeIcons.barsStaggered, color: AppColors.darkBlue),
         ),
         SizedBox(width: 10.w),
         Column(
@@ -208,7 +208,7 @@ class AppBarPart extends StatelessWidget {
                     backgroundColor: AppColors.darkBlue,
                     onPressed: () => context.push(AppPaths.cart),
                     size: 60.h,
-                    icon: Icon(
+                    icon: FaIcon(
                       FontAwesomeIcons.basketShopping,
                       color: AppColors.white,
                     ),
@@ -228,7 +228,7 @@ class AppBarPart extends StatelessWidget {
                       backgroundColor: AppColors.darkBlue,
                       size: 60.h,
                       onPressed: () => context.push(AppPaths.cart),
-                      icon: Icon(
+                      icon: FaIcon(
                         FontAwesomeIcons.basketShopping,
                         color: AppColors.white,
                       ),
@@ -369,7 +369,7 @@ class AppBarPart extends StatelessWidget {
                     color: AppColors.secondary.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(
+                  child: FaIcon(
                     FontAwesomeIcons.bolt,
                     color: AppColors.secondary,
                     size: 40.h,
@@ -465,7 +465,7 @@ class AppBarPart extends StatelessWidget {
         ),
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
       ),
-      icon: Icon(FontAwesomeIcons.github, size: 16.h),
+      icon: FaIcon(FontAwesomeIcons.github, size: 16.h),
       label: Text(
         name,
         style: GoogleFonts.sen(

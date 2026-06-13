@@ -211,7 +211,7 @@ class RestaurantInfo extends StatelessWidget {
 }
 
 class InfoRowItem extends StatelessWidget {
-  final IconData icon;
+  final dynamic icon;
   final String text;
 
   const InfoRowItem({super.key, required this.icon, required this.text});
@@ -220,7 +220,9 @@ class InfoRowItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, color: AppColors.secondary, size: 20.h),
+        icon is FaIconData
+            ? FaIcon(icon as FaIconData, color: AppColors.secondary, size: 20.h)
+            : Icon(icon as IconData, color: AppColors.secondary, size: 20.h),
         SizedBox(width: 10.w),
         Text(
           text,

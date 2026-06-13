@@ -93,7 +93,7 @@ class RestaurantInfoPart extends StatelessWidget {
         SizedBox(height: 10.h),
         Row(
           children: [
-            Icon(FontAwesomeIcons.star, color: AppColors.secondary, size: 20.h),
+            FaIcon(FontAwesomeIcons.star, color: AppColors.secondary, size: 20.h),
             SizedBox(width: 10.w),
             Text(
               restaurantEntity.rate.toString(),
@@ -104,7 +104,7 @@ class RestaurantInfoPart extends StatelessWidget {
               ),
             ),
             SizedBox(width: 30.w),
-            Icon(
+            FaIcon(
               FontAwesomeIcons.truck,
               color: AppColors.secondary,
               size: 20.h,
@@ -119,7 +119,7 @@ class RestaurantInfoPart extends StatelessWidget {
               ),
             ),
             SizedBox(width: 30.w),
-            Icon(
+            FaIcon(
               FontAwesomeIcons.clock,
               color: AppColors.secondary,
               size: 20.h,

@@ -129,7 +129,7 @@ class SuggestedRestaurantItem extends StatelessWidget {
               restaurant != null && !isLoading
                   ? Row(
                       children: [
-                        Icon(
+                        FaIcon(
                           FontAwesomeIcons.star,
                           color: AppColors.secondary,
                           size: 16.h,

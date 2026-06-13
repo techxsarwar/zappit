@@ -231,7 +231,7 @@ class FoodInfoPart extends StatelessWidget {
         SizedBox(height: 30.h),
         Row(
           children: [
-            Icon(FontAwesomeIcons.star, color: AppColors.secondary, size: 20.h),
+            FaIcon(FontAwesomeIcons.star, color: AppColors.secondary, size: 20.h),
             SizedBox(width: 10.w),
             Text(
               foodEntity.rating.toString(),
@@ -242,7 +242,7 @@ class FoodInfoPart extends StatelessWidget {
               ),
             ),
             SizedBox(width: 30.w),
-            Icon(
+            FaIcon(
               FontAwesomeIcons.truck,
               color: AppColors.secondary,
               size: 20.h,
@@ -257,7 +257,7 @@ class FoodInfoPart extends StatelessWidget {
               ),
             ),
             SizedBox(width: 30.w),
-            Icon(
+            FaIcon(
               FontAwesomeIcons.clock,
               color: AppColors.secondary,
               size: 20.h,
