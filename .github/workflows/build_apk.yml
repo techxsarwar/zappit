@@ -28,8 +28,10 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Create dummy .env file
-        run: touch .env
+      - name: Create .env file
+        run: |
+          echo "SUPABASE_URL=https://kjpawlxuzaibonepkrqx.supabase.co" > .env
+          echo "SUPABASE_ANON_KEY=sb_publishable_hyRJ3hX5W7WhprRsJzIPFw_rweJSVtL" >> .env
 
       - name: Install dependencies
         run: flutter pub get
