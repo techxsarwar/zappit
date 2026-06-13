@@ -11,9 +11,9 @@
 
 ---
 
-## 🍔 Food Delivery App
+## 🍔 Zappit
 
-A modern Food Delivery App built with Flutter. The app provides an intuitive UI and seamless experience for browsing restaurants, selecting meals, and placing orders.
+A modern food delivery app named Zappit built with Flutter. The app provides an intuitive UI and seamless experience for browsing restaurants, selecting meals, and placing orders.
 ---
 
 > ⚠️ **Project Status: In Development**  
@@ -26,7 +26,7 @@ A modern Food Delivery App built with Flutter. The app provides an intuitive UI 
 
 ## 📑 Table of Contents
 - [✨ Badges](#-badges)
-- [🍔 Food Delivery App](#-food-delivery-app)
+- [🍔 Zappit](#-zappit)
 - [🚀 Features](#-features)
 - [📊 App Architecture](#-app-architecture)
 - [🚀 Getting Started](#-getting-started)

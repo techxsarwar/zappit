@@ -11,6 +11,9 @@ import 'package:food_delivery/shared/widgets/custom_circle_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:food_delivery/core/services/toast_service.dart';
+import 'package:food_delivery/core/di/di.dart';
 
 class AppBarPart extends StatelessWidget {
   final String fullName;
@@ -134,30 +137,8 @@ class AppBarPart extends StatelessWidget {
     return Row(
       children: [
         CustomCircleButton(
-          backgroundColor: Color(0xFFECF0F4),
-          onPressed: () async {
-            await seedFoods();
-            // await Supabase.instance.client.from('restaurants').insert({
-            //   'name': 'Rose Garden Restaurant',
-            //   'delivery_cost': 'Free',
-            //   'image_url':
-            //       'https://images.pexels.com/photos/1099680/pexels-photo-1099680.jpeg',
-            //   'images': [
-            //     "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg",
-            //     "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg",
-            //     "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg",
-            //     "https://images.pexels.com/photos/1099680/pexels-photo-1099680.jpeg",
-            //     'https://images.pexels.com/photos/2977514/pexels-photo-2977514.jpeg',
-            //     'https://images.pexels.com/photos/4252146/pexels-photo-4252146.jpeg',
-            //     'https://images.pexels.com/photos/3717880/pexels-photo-3717880.jpeg',
-            //   ],
-            //   'found_food': ["Burger", "Chiken", "Riche", "Wings"],
-            //   'rate': '4.9',
-            //   'description':
-            //       "Maecenas sed diam eget risus varius blandit sit amet non magna. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.",
-            //   'delivery_time': '30 min',
-            // });
-          },
+          backgroundColor: const Color(0xFFECF0F4),
+          onPressed: () => _showMenuBottomSheet(context),
           size: 60.h,
           icon: Icon(FontAwesomeIcons.barsStaggered, color: AppColors.darkBlue),
         ),
@@ -186,7 +167,7 @@ class AppBarPart extends StatelessWidget {
                       style: GoogleFonts.sen(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.normal,
-                        color: Color(0xFF676767),
+                        color: const Color(0xFF676767),
                       ),
                     ),
                   ),
@@ -240,6 +221,248 @@ class AppBarPart extends StatelessWidget {
           },
         ),
       ],
+    );
+  }
+
+  void _showMenuBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+      ),
+      backgroundColor: AppColors.white,
+      builder: (context) {
+        return SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 50.w,
+                    height: 5.h,
+                    decoration: BoxDecoration(
+                      color: AppColors.lightGray,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                Text(
+                  "Zappit Options",
+                  style: GoogleFonts.sen(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.darkBlue,
+                  ),
+                ),
+                SizedBox(height: 15.h),
+                ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: AppColors.secondary.withOpacity(0.1),
+                    child: const Icon(Icons.info_outline, color: AppColors.secondary),
+                  ),
+                  title: Text(
+                    "About Zappit",
+                    style: GoogleFonts.sen(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.darkBlue,
+                    ),
+                  ),
+                  subtitle: Text(
+                    "Company credits & developer profiles",
+                    style: GoogleFonts.sen(
+                      fontSize: 13.sp,
+                      color: AppColors.textGray,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _showAboutDialog(context);
+                  },
+                ),
+                Divider(color: AppColors.lightGray, height: 20.h),
+                ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: AppColors.darkBlue.withOpacity(0.1),
+                    child: const Icon(Icons.dns_outlined, color: AppColors.darkBlue),
+                  ),
+                  title: Text(
+                    "Seed Database Foods",
+                    style: GoogleFonts.sen(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.darkBlue,
+                    ),
+                  ),
+                  subtitle: Text(
+                    "Load initial sample restaurant & food data",
+                    style: GoogleFonts.sen(
+                      fontSize: 13.sp,
+                      color: AppColors.textGray,
+                    ),
+                  ),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    try {
+                      await seedFoods();
+                      if (context.mounted) {
+                        getIt<ToastService>().showSuccessToast(
+                          context: context,
+                          message: "Database seeded successfully!",
+                        );
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        getIt<ToastService>().showErrorToast(
+                          context: context,
+                          message: "Failed to seed database: $e",
+                        );
+                      }
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showAboutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24.r),
+          ),
+          backgroundColor: AppColors.white,
+          child: Padding(
+            padding: EdgeInsets.all(24.h),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(16.h),
+                  decoration: BoxDecoration(
+                    color: AppColors.secondary.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    FontAwesomeIcons.bolt,
+                    color: AppColors.secondary,
+                    size: 40.h,
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                Text(
+                  "Zappit",
+                  style: GoogleFonts.sen(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.darkBlue,
+                  ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  "ParallelogramFoundation",
+                  style: GoogleFonts.sen(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.secondary,
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                Text(
+                  "Founded by",
+                  style: GoogleFonts.sen(
+                    fontSize: 12.sp,
+                    color: AppColors.textGray,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 6.h),
+                Text(
+                  "Sarwar Altaf Dar & Burhan Hamid Dar",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.sen(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.darkBlue,
+                  ),
+                ),
+                SizedBox(height: 24.h),
+                Text(
+                  "Meet The Developers",
+                  style: GoogleFonts.sen(
+                    fontSize: 12.sp,
+                    color: AppColors.textGray,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 12.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildDeveloperButton(
+                      name: "Sarwar Altaf",
+                      url: "https://github.com/techxsarwar/",
+                    ),
+                    _buildDeveloperButton(
+                      name: "Burhan Hamid",
+                      url: "https://github.com/BurhanHamidDar",
+                    ),
+                  ],
+                ),
+                SizedBox(height: 24.h),
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    "Close",
+                    style: GoogleFonts.sen(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.secondary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildDeveloperButton({required String name, required String url}) {
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.darkBlue,
+        foregroundColor: AppColors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      ),
+      icon: Icon(FontAwesomeIcons.github, size: 16.h),
+      label: Text(
+        name,
+        style: GoogleFonts.sen(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      onPressed: () async {
+        final Uri uri = Uri.parse(url);
+        if (await canLaunchUrl(uri)) {
+          await launchUrl(uri, mode: LaunchMode.externalApplication);
+        }
+      },
     );
   }
 }

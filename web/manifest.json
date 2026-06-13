@@ -1,6 +1,6 @@
 {
-    "name": "food_delivery",
-    "short_name": "food_delivery",
+    "name": "Zappit",
+    "short_name": "Zappit",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
