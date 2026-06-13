@@ -24,10 +24,11 @@ void main() async {
     anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? '',
   );
 
-  if (kReleaseMode) {
+  final sentryDsn = dotenv.env['SENTRY_DSN'];
+  if (kReleaseMode && sentryDsn != null && sentryDsn.isNotEmpty) {
     await SentryFlutter.init(
       (options) {
-        options.dsn = dotenv.env['SENTRY_DSN'];
+        options.dsn = sentryDsn;
         options.sendDefaultPii = true;
       },
       appRunner: () {
