@@ -22,114 +22,130 @@ class AppBarPart extends StatelessWidget {
   Future<void> seedFoods() async {
     final supabase = Supabase.instance.client;
 
-    // await supabase.from('foods').insert([
-    //   {
-    //     'title': 'Spaghetti Bolognese',
-    //     'description': 'Classic Italian pasta with rich beef tomato sauce',
-    //     'price': 85,
-    //     'restaurant_name': 'Italiano',
-    //     'quantity': 1,
-    //     'rating': 4.5,
-    //     'delivery_time': '30 min',
-    //     'delivery_cost': '25 EGP',
-    //     'size': '10',
-    //     'category': 'pasta',
-    //     'image': supabase.storage
-    //         .from('food-delivery-images')
-    //         .getPublicUrl('food_images/pasta/pasta_1.png'),
-    //   },
-    //   {
-    //     'title': 'Fettuccine Alfredo',
-    //     'description': 'Creamy pasta with parmesan and butter sauce',
-    //     'price': 90,
-    //     'restaurant_name': 'Olive Garden',
-    //     'quantity': 1,
-    //     'rating': 4.6,
-    //     'delivery_time': '35 min',
-    //     'delivery_cost': '28 EGP',
-    //     'size': '10',
-    //     'category': 'pasta',
-    //     'image': supabase.storage
-    //         .from('food-delivery-images')
-    //         .getPublicUrl('food_images/pasta/pasta_2.png'),
-    //   },
-    //   {
-    //     'title': 'Penne Arrabiata',
-    //     'description': 'Spicy tomato-based pasta with garlic and chili',
-    //     'price': 75,
-    //     'restaurant_name': 'Pasta House',
-    //     'quantity': 1,
-    //     'rating': 4.2,
-    //     'delivery_time': '25 min',
-    //     'delivery_cost': '20 EGP',
-    //     'size': '10',
-    //     'category': 'pasta',
-    //     'image': supabase.storage
-    //         .from('food-delivery-images')
-    //         .getPublicUrl('food_images/pasta/pasta_3.png'),
-    //   },
-    //   {
-    //     'title': 'Lasagna',
-    //     'description': 'Layers of pasta with beef, tomato sauce, and cheese',
-    //     'price': 95,
-    //     'restaurant_name': 'Mama Mia',
-    //     'quantity': 1,
-    //     'rating': 4.7,
-    //     'delivery_time': '40 min',
-    //     'delivery_cost': '30 EGP',
-    //     'size': '10',
-    //     'category': 'pasta',
-    //     'image': supabase.storage
-    //         .from('food-delivery-images')
-    //         .getPublicUrl('food_images/pasta/pasta_4.png'),
-    //   },
-    //   {
-    //     'title': 'Carbonara',
-    //     'description': 'Creamy pasta with eggs, cheese, pancetta, and pepper',
-    //     'price': 100,
-    //     'restaurant_name': 'La Cucina',
-    //     'quantity': 1,
-    //     'rating': 4.8,
-    //     'delivery_time': '30 min',
-    //     'delivery_cost': '32 EGP',
-    //     'size': '10',
-    //     'category': 'pasta',
-    //     'image': supabase.storage
-    //         .from('food-delivery-images')
-    //         .getPublicUrl('food_images/pasta/pasta_5.png'),
-    //   },
-    //   {
-    //     'title': 'Seafood Pasta',
-    //     'description':
-    //         'Pasta with shrimp, calamari, and mussels in tomato sauce',
-    //     'price': 120,
-    //     'restaurant_name': 'Fisherman\'s Kitchen',
-    //     'quantity': 1,
-    //     'rating': 4.6,
-    //     'delivery_time': '45 min',
-    //     'delivery_cost': '35 EGP',
-    //     'size': '10',
-    //     'category': 'pasta',
-    //     'image': supabase.storage
-    //         .from('food-delivery-images')
-    //         .getPublicUrl('food_images/pasta/pasta_6.png'),
-    //   },
-    //   {
-    //     'title': 'Pesto Pasta',
-    //     'description': 'Fresh basil pesto sauce with pine nuts and parmesan',
-    //     'price': 85,
-    //     'restaurant_name': 'Green Leaf',
-    //     'quantity': 1,
-    //     'rating': 4.4,
-    //     'delivery_time': '25 min',
-    //     'delivery_cost': '22 EGP',
-    //     'size': '10',
-    //     'category': 'pasta',
-    //     'image': supabase.storage
-    //         .from('food-delivery-images')
-    //         .getPublicUrl('food_images/pasta/pasta_7.png'),
-    //   },
-    // ]);
+    try {
+      // 1. Seed categories
+      await supabase.from('all_categories').upsert([
+        {
+          'title': 'Pasta',
+          'image': 'https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg',
+          'startingPrice': 75.0,
+        },
+        {
+          'title': 'Burger',
+          'image': 'https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg',
+          'startingPrice': 60.0,
+        },
+        {
+          'title': 'Pizza',
+          'image': 'https://images.pexels.com/photos/1566837/pexels-photo-1566837.jpeg',
+          'startingPrice': 90.0,
+        },
+      ]);
+
+      // 2. Seed restaurants
+      await supabase.from('restaurants').upsert([
+        {
+          'name': 'Rose Garden Restaurant',
+          'delivery_cost': 'Free',
+          'image_url': 'https://images.pexels.com/photos/1099680/pexels-photo-1099680.jpeg',
+          'images': [
+            "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg",
+            "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg",
+            "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg",
+          ],
+          'found_food': ["Burger", "Chicken", "Rice", "Wings"],
+          'rate': '4.9',
+          'description': "Maecenas sed diam eget risus varius blandit sit amet non magna. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.",
+          'delivery_time': '30 min',
+          'categories': ['burger', 'pasta', 'pizza']
+        },
+        {
+          'name': 'Italiano Bistro',
+          'delivery_cost': '25 EGP',
+          'image_url': 'https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg',
+          'images': [
+            "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg",
+            "https://images.pexels.com/photos/1099680/pexels-photo-1099680.jpeg",
+          ],
+          'found_food': ["Pasta", "Lasagna", "Pizza"],
+          'rate': '4.7',
+          'description': "Delicious classical Italian cuisine served fresh daily with hand-picked premium local ingredients.",
+          'delivery_time': '25 min',
+          'categories': ['pasta', 'pizza']
+        }
+      ]);
+
+      // 3. Seed foods
+      await supabase.from('foods').upsert([
+        {
+          'title': 'Spaghetti Bolognese',
+          'description': 'Classic Italian pasta with rich beef tomato sauce',
+          'price': 85,
+          'restaurant_name': 'Italiano Bistro',
+          'quantity': 1,
+          'rating': 4.5,
+          'delivery_time': '30 min',
+          'delivery_cost': '25 EGP',
+          'size': 'Medium',
+          'category': 'Pasta',
+          'image': 'https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg',
+        },
+        {
+          'title': 'Fettuccine Alfredo',
+          'description': 'Creamy pasta with parmesan and butter sauce',
+          'price': 90,
+          'restaurant_name': 'Italiano Bistro',
+          'quantity': 1,
+          'rating': 4.6,
+          'delivery_time': '35 min',
+          'delivery_cost': '28 EGP',
+          'size': 'Medium',
+          'category': 'Pasta',
+          'image': 'https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg',
+        },
+        {
+          'title': 'Penne Arrabiata',
+          'description': 'Spicy tomato-based pasta with garlic and chili',
+          'price': 75,
+          'restaurant_name': 'Italiano Bistro',
+          'quantity': 1,
+          'rating': 4.2,
+          'delivery_time': '25 min',
+          'delivery_cost': '20 EGP',
+          'size': 'Medium',
+          'category': 'Pasta',
+          'image': 'https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg',
+        },
+        {
+          'title': 'Lasagna',
+          'description': 'Layers of pasta with beef, tomato sauce, and cheese',
+          'price': 95,
+          'restaurant_name': 'Italiano Bistro',
+          'quantity': 1,
+          'rating': 4.7,
+          'delivery_time': '40 min',
+          'delivery_cost': '30 EGP',
+          'size': 'Large',
+          'category': 'Pasta',
+          'image': 'https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg',
+        },
+        {
+          'title': 'Classic Burger',
+          'description': 'Grilled beef patty with cheese, lettuce, tomato, and special sauce',
+          'price': 80,
+          'restaurant_name': 'Rose Garden Restaurant',
+          'quantity': 1,
+          'rating': 4.8,
+          'delivery_time': '20 min',
+          'delivery_cost': 'Free',
+          'size': 'Regular',
+          'category': 'Burger',
+          'image': 'https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg',
+        }
+      ]);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
